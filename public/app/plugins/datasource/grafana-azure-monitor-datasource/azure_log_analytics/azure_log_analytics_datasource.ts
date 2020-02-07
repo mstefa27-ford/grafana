@@ -14,6 +14,7 @@ export default class AzureLogAnalyticsDatasource {
   azureMonitorUrl: string;
   defaultOrFirstWorkspace: string;
   subscriptionId: string;
+  cloudName: string;
 
   /** @ngInject */
   constructor(
@@ -21,7 +22,12 @@ export default class AzureLogAnalyticsDatasource {
     private templateSrv: TemplateSrv
   ) {
     this.id = instanceSettings.id;
+    this.cloudName = instanceSettings.jsonData.cloudName;
     this.baseUrl = '/loganalyticsazure';
+
+    if (this.cloudName !== undefined && this.cloudName.includes('china')) {
+      this.baseUrl = '/chinaloganalyticsazure';
+    }
     this.url = instanceSettings.url;
     this.defaultOrFirstWorkspace = this.instanceSettings.jsonData.logAnalyticsDefaultWorkspace;
 
